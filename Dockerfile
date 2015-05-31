@@ -35,5 +35,6 @@ ADD templates/nginx-template.conf $NGINX_TEMPLATE
 # Run this other shit
 CMD consul-template \
         -consul=ambassador:8500 \
-        -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:source $AMBASSADOR_CONFIG && echo $TEST_5000" \
-        -template "$NGINX_TEMPLATE:$NGINX_CONFIG:cat $NGINX_CONFIG";
+        -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:cat $AMBASSADOR_CONFIG";
+
+# -template "$NGINX_TEMPLATE:$NGINX_CONFIG:cat $NGINX_CONFIG";
