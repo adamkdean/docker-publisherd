@@ -29,13 +29,11 @@ ADD templates/ambassador-template.conf $AMBASSADOR_TEMPLATE
 ENV HAPROXY_TEMPLATE /etc/consul-templates/haproxy-template.conf
 ENV HAPROXY_CONFIG /etc/haproxy/haproxy.cfg
 ADD templates/haproxy-template.conf $HAPROXY_TEMPLATE
+ADD haproxy-default.cfg $HAPROXY_CONFIG
 ADD haproxy.sh /haproxy-start
 
 # Logging level
 ENV CONSUL_TEMPLATE_LOG debug
-
-# Port exposure
-EXPOSE 5000
 
 # Run this shit
 CMD bash /haproxy-start
