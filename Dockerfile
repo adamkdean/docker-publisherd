@@ -33,6 +33,9 @@ ADD templates/haproxy-template.conf $HAPROXY_TEMPLATE
 # Logging level
 ENV CONSUL_TEMPLATE_LOG debug
 
+# Port exposure
+EXPOSE 5000
+
 # Run this shit
 CMD haproxy -f $HAPROXY_CONFIG -d -p /var/run/haproxy.pid \
     && consul-template \
