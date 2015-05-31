@@ -36,7 +36,7 @@ ADD haproxy.sh /haproxy-start
 ENV CONSUL_TEMPLATE_LOG debug
 
 # Run this shit
-CMD bash /haproxy-start
+CMD bash /haproxy-start \
     && consul-template \
         -consul=ambassador:8500 \
         -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
