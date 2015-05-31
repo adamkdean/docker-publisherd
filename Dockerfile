@@ -13,15 +13,20 @@ RUN mkdir /var/service
 ENV CT_URL https://github.com/hashicorp/consul-template/releases/download/v0.9.0/consul-template_0.9.0_linux_amd64.tar.gz /var/service
 RUN curl -L $CT_URL | tar -C /usr/local/bin --strip-components 1 -zxf -
 
-# Setup consul-template files
-ENV CT_FILE /etc/consul-templates/nginx.conf
-ENV NX_FILE /etc/nginx/nginx.conf
-RUN mkdir /etc/consul-templates
-ADD nginx-template.conf $CT_FILE
+# Create required directories
+RUN mkdir /etc/consul-templates /etc/ambassador
 
-ENV BACKEND_8500 consul-8500.service.consul
+# Setup template files for ambassador environment vars
+ENV AMBASSADOR_TEMPLATE /etc/consul-templates/ambassador-template.conf
+ENV AMBASSADOR_CONFIG /etc/ambassador/ambassador.conf
+ADD ambassador-template.conf $AMBASSADOR_TEMPLATE
 
-# # Run this shit
+# Setup template files for nginx
+ENV NGINX_TEMPLATE /etc/consul-templates/nginx-template.conf
+ENV NGINX_CONFIG /etc/nginx/nginx.conf
+ADD nginx-template.conf $NGINX_TEMPLATE
+
+# Run this shit
 # CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf \
 #     & consul-template \
 #         -consul=ambassador:8500 \
@@ -30,4 +35,5 @@ ENV BACKEND_8500 consul-8500.service.consul
 # Run this other shit
 CMD consul-template \
         -consul=ambassador:8500 \
-        -template "$CT_FILE:$NX_FILE:cat $NX_FILE";
+        -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:source $AMBASSADOR_CONFIG" \
+        -template "$NGINX_TEMPLATE:$NGINX_CONFIG:cat $NX_FILE";
