@@ -37,7 +37,7 @@ ENV CONSUL_TEMPLATE_LOG debug
 EXPOSE 5000
 
 # Run this shit
-CMD haproxy -f $HAPROXY_CONFIG -d -p /var/run/haproxy.pid \
+CMD haproxy -f $HAPROXY_CONFIG -d -p "/var/run/haproxy.pid" \
     && consul-template \
         -consul=ambassador:8500 \
         -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
