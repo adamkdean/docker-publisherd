@@ -12,8 +12,7 @@ ADD test.conf /etc/consul-templates/test.conf
 ENV CT_FILE /etc/consul-templates/test.conf
 ENV NX_FILE /etc/consul-templates/test-dest.conf
 
-ENV CONSUL consul-8500.service.consul
-
+# Run this shit
 CMD CONSUL_TEMPLATE_LOG=debug consul-template \
-        -consul=$CONSUL \
+        -consul=ambassador:8500 \
         -template "$CT_FILE:$NX_FILE:cat $NX_FILE";

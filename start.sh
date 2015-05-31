@@ -3,5 +3,6 @@
 docker build -t consul-template-test .
 
 docker run --rm -ti \
-    --dns=10.17.42.1 \
+    --link ambassador:ambassador \
+    -e "BACKEND_8500=consul-8500.service.consul" \
     consul-template-test
