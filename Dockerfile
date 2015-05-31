@@ -19,12 +19,12 @@ RUN mkdir /etc/consul-templates /etc/ambassador
 # Setup template files for ambassador environment vars
 ENV AMBASSADOR_TEMPLATE /etc/consul-templates/ambassador-template.conf
 ENV AMBASSADOR_CONFIG /etc/ambassador/ambassador.sh
-ADD ambassador-template.conf $AMBASSADOR_TEMPLATE
+ADD templates/ambassador-template.conf $AMBASSADOR_TEMPLATE
 
 # Setup template files for nginx
 ENV NGINX_TEMPLATE /etc/consul-templates/nginx-template.conf
 ENV NGINX_CONFIG /etc/nginx/nginx.conf
-ADD nginx-template.conf $NGINX_TEMPLATE
+ADD templates/nginx-template.conf $NGINX_TEMPLATE
 
 # Run this shit
 # CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf \
