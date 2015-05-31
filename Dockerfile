@@ -41,4 +41,4 @@ CMD bash /haproxy-start \
         -consul=ambassador:8500 \
         -template "$HAPROXY_TEMPLATE:/ignore-this:echo 'UPDATED'" \
         -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
-        -template "$HAPROXY_TEMPLATE:$HAPROXY_CONFIG:service haproxy reload";
+        -template "$HAPROXY_TEMPLATE:$HAPROXY_CONFIG:service haproxy restart";
