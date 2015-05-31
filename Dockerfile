@@ -31,4 +31,6 @@ CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf \
     & consul-template \
         -consul=ambassador:8500 \
         -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
-        -template "$NGINX_TEMPLATE:$NGINX_CONFIG:/usr/sbin/nginx -s reload";
+        -template "$NGINX_TEMPLATE:$NGINX_CONFIG:cat $NGINX_CONFIG";
+
+# -template "$NGINX_TEMPLATE:$NGINX_CONFIG:/usr/sbin/nginx -s reload";
