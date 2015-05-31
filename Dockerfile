@@ -29,6 +29,7 @@ ADD templates/ambassador-template.conf $AMBASSADOR_TEMPLATE
 ENV HAPROXY_TEMPLATE /etc/consul-templates/haproxy-template.conf
 ENV HAPROXY_CONFIG /etc/haproxy/haproxy.cfg
 ADD templates/haproxy-template.conf $HAPROXY_TEMPLATE
+ADD haproxy.sh /haproxy-start
 
 # Logging level
 ENV CONSUL_TEMPLATE_LOG debug
@@ -37,7 +38,7 @@ ENV CONSUL_TEMPLATE_LOG debug
 EXPOSE 5000
 
 # Run this shit
-CMD haproxy -f $HAPROXY_CONFIG -d -p "/var/run/haproxy.pid" \
+CMD bash /haproxy-start
     && consul-template \
         -consul=ambassador:8500 \
         -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
