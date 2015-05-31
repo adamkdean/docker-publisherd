@@ -19,8 +19,15 @@ ENV NX_FILE /etc/nginx/nginx.conf
 RUN mkdir /etc/consul-templates
 ADD nginx-template.conf $CT_FILE
 
-# Run this shit
-CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf \
-    & consul-template \
+ENV BACKEND_8500 consul-8500.service.consul
+
+# # Run this shit
+# CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf \
+#     & consul-template \
+#         -consul=ambassador:8500 \
+#         -template "$CT_FILE:$NX_FILE:/usr/sbin/nginx -s reload";
+
+# Run this other shit
+CMD consul-template \
         -consul=ambassador:8500 \
-        -template "$CT_FILE:$NX_FILE:/usr/sbin/nginx -s reload";
+        -template "$CT_FILE:$NX_FILE:cat $NX_FILE";
