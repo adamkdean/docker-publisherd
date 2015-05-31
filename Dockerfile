@@ -1,5 +1,12 @@
-FROM adamkdean/baseimage
+FROM nginx:1.7
 MAINTAINER Adam K Dean
+
+# Logging level
+# default is ENV CONSUL_TEMPLATE_LOG warn
+ENV CONSUL_TEMPLATE_LOG debug
+
+# Install curl
+RUN apt-get update -qq && apt-get -y install curl
 
 # Download consul-template and extract it
 RUN mkdir /var/service
@@ -7,12 +14,13 @@ ENV CT_URL https://github.com/hashicorp/consul-template/releases/download/v0.9.0
 RUN curl -L $CT_URL | tar -C /usr/local/bin --strip-components 1 -zxf -
 
 # Setup consul-template files
+ENV CT_FILE /etc/consul-templates/nginx.conf
+ENV NX_FILE /etc/nginx/nginx.conf
 RUN mkdir /etc/consul-templates
-ADD test.conf /etc/consul-templates/test.conf
-ENV CT_FILE /etc/consul-templates/test.conf
-ENV NX_FILE /etc/consul-templates/test-dest.conf
+ADD nginx-template.conf $CT_FILE
 
 # Run this shit
-CMD CONSUL_TEMPLATE_LOG=debug consul-template \
+CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf \
+    & consul-template \
         -consul=ambassador:8500 \
-        -template "$CT_FILE:$NX_FILE:cat $NX_FILE";
+        -template "$CT_FILE:$NX_FILE:/usr/sbin/nginx -s reload";
