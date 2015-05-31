@@ -18,7 +18,7 @@ RUN mkdir /etc/consul-templates /etc/ambassador
 
 # Setup template files for ambassador environment vars
 ENV AMBASSADOR_TEMPLATE /etc/consul-templates/ambassador-template.conf
-ENV AMBASSADOR_CONFIG /etc/ambassador/ambassador.conf
+ENV AMBASSADOR_CONFIG /etc/ambassador/ambassador.sh
 ADD ambassador-template.conf $AMBASSADOR_TEMPLATE
 
 # Setup template files for nginx
@@ -35,5 +35,5 @@ ADD nginx-template.conf $NGINX_TEMPLATE
 # Run this other shit
 CMD consul-template \
         -consul=ambassador:8500 \
-        -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:source $AMBASSADOR_CONFIG" \
+        -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:source $AMBASSADOR_CONFIG && echo $TEST_5000" \
         -template "$NGINX_TEMPLATE:$NGINX_CONFIG:cat $NX_FILE";
