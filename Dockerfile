@@ -29,5 +29,6 @@ ENV CONSUL_TEMPLATE_LOG debug
 CMD nginx -c /etc/nginx/nginx.conf \
     & consul-template \
         -consul=ambassador:8500 \
-        -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
         -template "$NGINX_TEMPLATE:$NGINX_CONFIG:nginx -s reload";
+
+# -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
