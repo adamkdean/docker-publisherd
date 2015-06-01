@@ -1,16 +1,8 @@
-FROM adamkdean/baseimage
+FROM nginx:1.7
 MAINTAINER Adam K Dean
 
 # Install Curl
 RUN apt-get update -qq && apt-get -y install curl
-
-# Install Haproxy
-RUN \
-  sed -i 's/^# \(.*-backports\s\)/\1/g' /etc/apt/sources.list && \
-  apt-get update && \
-  apt-get install -y haproxy=1.5.3-1~ubuntu14.04.1 && \
-  sed -i 's/^ENABLED=.*/ENABLED=1/' /etc/default/haproxy && \
-  rm -rf /var/lib/apt/lists/*
 
 # Download consul-template and extract it
 RUN mkdir /var/service
@@ -25,20 +17,17 @@ ENV AMBASSADOR_TEMPLATE /etc/consul-templates/ambassador-template.conf
 ENV AMBASSADOR_CONFIG /etc/ambassador/ambassador.sh
 ADD templates/ambassador-template.conf $AMBASSADOR_TEMPLATE
 
-# Setup template files for haproxy
-ENV HAPROXY_TEMPLATE /etc/consul-templates/haproxy-template.conf
-ENV HAPROXY_CONFIG /etc/haproxy/haproxy.cfg
-ADD templates/haproxy-template.conf $HAPROXY_TEMPLATE
-ADD haproxy-default.cfg $HAPROXY_CONFIG
-ADD haproxy.sh /haproxy-start
+# Setup template files for nginx
+ENV NGINX_TEMPLATE /etc/consul-templates/nginx-template.conf
+ENV NGINX_CONFIG /etc/nginx/nginx.cfg
+ADD templates/nginx-template.conf $NGINX_TEMPLATE
 
 # Logging level
 ENV CONSUL_TEMPLATE_LOG debug
 
 # Run this shit
-CMD bash /haproxy-start \
+CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf \
     & consul-template \
         -consul=ambassador:8500 \
-        -template "$HAPROXY_TEMPLATE:/ignore-this:echo 'UPDATED'" \
         -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
-        -template "$HAPROXY_TEMPLATE:$HAPROXY_CONFIG:service haproxy restart";
+        -template "$HAPROXY_TEMPLATE:$HAPROXY_CONFIG:/usr/sbin/nginx -s reload";
