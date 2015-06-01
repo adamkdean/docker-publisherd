@@ -19,14 +19,14 @@ ADD templates/ambassador-template.conf $AMBASSADOR_TEMPLATE
 
 # Setup template files for nginx
 ENV NGINX_TEMPLATE /etc/consul-templates/nginx-template.conf
-ENV NGINX_CONFIG /etc/nginx/nginx.conf
+ENV NGINX_CONFIG /etc/nginx/conf.d/app.conf
 ADD templates/nginx-template.conf $NGINX_TEMPLATE
 
 # Logging level
 ENV CONSUL_TEMPLATE_LOG debug
 
 # Run this shit
-CMD nginx -c $NGINX_CONFIG \
+CMD nginx -c /etc/nginx/nginx.conf \
     & consul-template \
         -consul=ambassador:8500 \
         -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
