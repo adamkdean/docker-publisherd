@@ -6,8 +6,6 @@ RUN apt-get update -qq && \
 
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN rm -f /etc/nginx/sites-available/default
-# ADD default /etc/nginx/sites-available/default
-# ADD src/ /var/www
 
 EXPOSE 80
 
