@@ -4,8 +4,6 @@ MAINTAINER Adam K Dean
 RUN apt-get update -qq && \
     apt-get -y install nginx
 
-RUN rm -rf /etc/nginx/sites-enabled/default
-RUN cat /etc/nginx/nginx.conf
+# RUN rm -rf /etc/nginx/sites-enabled/default
 
-# CMD echo 'running...' && nginx -c /etc/nginx/nginx.conf
-CMD nginx -v
+CMD nginx -c /etc/nginx/nginx.conf
