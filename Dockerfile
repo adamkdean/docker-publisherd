@@ -21,7 +21,7 @@ RUN curl -L $CT_URL | tar -C /usr/local/bin --strip-components 1 -zxf -
 RUN mkdir /etc/consul-templates
 
 ENV NGINX_TEMPLATE /etc/consul-templates/nginx-template.conf
-ENV NGINX_CONFIG /var/nginx/conf.d/app.conf
+ENV NGINX_CONFIG /etc/nginx/conf.d/app.conf
 ADD templates/nginx-template.conf $NGINX_TEMPLATE
 
 ENV RELOAD_TEMPLATE /etc/consul-templates/reload-template.conf
