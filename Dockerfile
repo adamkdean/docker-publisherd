@@ -30,4 +30,4 @@ CMD nginx -c $NGINX_CONFIG \
     & consul-template \
         -consul=ambassador:8500 \
         -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
-        -template "$HAPROXY_TEMPLATE:$HAPROXY_CONFIG:/usr/sbin/nginx -s reload";
+        -template "$NGINX_TEMPLATE:$NGINX_CONFIG:nginx -s reload";
