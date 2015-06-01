@@ -22,7 +22,7 @@ ADD templates/ambassador-template.conf $AMBASSADOR_TEMPLATE
 ENV NGINX_TEMPLATE /etc/consul-templates/nginx-template.conf
 ENV NGINX_CONFIG /etc/nginx/conf.d/app.conf
 ADD templates/nginx-template.conf $NGINX_TEMPLATE
-# RUN rm -rf /etc/nginx/sites-enabled/default
+RUN rm -rf /etc/nginx/sites-enabled/default
 
 # Logging level
 ENV CONSUL_TEMPLATE_LOG debug
