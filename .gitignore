@@ -1,1 +1,3 @@
 .DS_Store
+nginx/app.conf
+nginx/reload.sh
