@@ -11,3 +11,18 @@ server {
     }
 }
 {{end}}{{end}}{{end}}
+
+
+
+server {
+    listen 80 default;
+    server_name www.cloudkeeper.io;
+
+    location / {
+        proxy_pass http://website;
+    }
+}
+
+upstream website {
+    server ambassador:8000;
+}
