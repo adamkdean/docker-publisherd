@@ -34,7 +34,7 @@ ENV CONSUL_TEMPLATE_LOG debug
 # Run this shit
 CMD consul-template \
         -consul=ambassador:8500 \
-        -template "$RELOAD_TEMPLATE:$RELOAD_CONFIG:echo 'done updating reload config'" \
         -template "$NGINX_TEMPLATE:$NGINX_CONFIG:echo 'done updating nginx config'";
 
+# -template "$RELOAD_TEMPLATE:$RELOAD_CONFIG:echo 'done updating reload config'"
 # bash /var/nginx/reload.sh
