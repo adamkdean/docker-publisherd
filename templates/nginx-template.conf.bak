@@ -19,10 +19,6 @@ server {
     server_name www.cloudkeeper.io;
 
     location / {
-        proxy_pass http://website;
+        proxy_pass http://www.adamkdean.co.uk;
     }
-}
-
-upstream website {
-    server ambassador:8000;
 }
