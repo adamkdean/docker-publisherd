@@ -33,4 +33,4 @@ ENV CONSUL_TEMPLATE_LOG debug
 
 # -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
 
-CMD ping ambassador
+CMD curl http://ambassador:8000
