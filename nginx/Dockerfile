@@ -7,4 +7,5 @@ RUN apt-get update -qq && \
 RUN rm -rf /etc/nginx/sites-enabled/default
 RUN cat /etc/nginx/nginx.conf
 
-CMD echo 'running...' && nginx -c /etc/nginx/nginx.conf
+# CMD echo 'running...' && nginx -c /etc/nginx/nginx.conf
+CMD nginx -v
