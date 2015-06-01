@@ -2,8 +2,8 @@
 server {
     listen 80;
     server_name {{$d.hostname}};
-    
-    resolver 127.0.0.1;
+
+    resolver 172.17.0.53;
     set $backend_upstream "http://{{$d.service}}.service.consul:{{$d.port}}";
 
     location / {
