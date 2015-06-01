@@ -8,8 +8,6 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 ADD default /etc/nginx/sites-available/default
 ADD src/ /var/www
 
-RUN ls /etc/nginx/conf.d/
-
 EXPOSE 80
 
 CMD "nginx"
