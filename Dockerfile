@@ -25,7 +25,7 @@ ENV NGINX_CONFIG /var/nginx/conf.d/app.conf
 ADD templates/nginx-template.conf $NGINX_TEMPLATE
 
 ENV RELOAD_TEMPLATE /etc/consul-templates/reload-template.conf
-ENV RELOAD_CONFIG /var/nginx/reload.sh
+ENV RELOAD_CONFIG /var/publisherd/reload.sh
 ADD templates/reload-template.conf $RELOAD_TEMPLATE
 
 # Logging level
@@ -35,4 +35,4 @@ ENV CONSUL_TEMPLATE_LOG debug
 CMD consul-template \
         -consul=ambassador:8500 \
         -template "$RELOAD_TEMPLATE:$RELOAD_CONFIG:echo 'done updating reload config'" \
-        -template "$NGINX_TEMPLATE:$NGINX_CONFIG:TESTABC=testing bash /var/nginx/reload.sh";
+        -template "$NGINX_TEMPLATE:$NGINX_CONFIG:bash /var/publisherd/reload.sh";

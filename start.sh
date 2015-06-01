@@ -8,11 +8,20 @@ docker build -t publisherd-proxy .
 cd ../
 docker build -t publisherd .
 
+# check if a data volume exists, if not, create it
+if [ $(docker ps -a | grep publisherd-data | wc -l) -eq 0 ]; then
+    docker run -d \
+        -v /etc/nginx/conf.d/ \
+        -v /var/publisherd/ \
+        --name publisherd-data \
+        busybox
+fi
+
 # run the publisherd main container
 docker run --rm -ti \
     --name publisherd \
     --link ambassador:ambassador \
-    -e BACKEND_8500=consul-8500.service.consul \
+    --volumes-from publisherd-data \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v $PWD/nginx/:/var/nginx/ \
+    -e BACKEND_8500=consul-8500.service.consul \
     publisherd
