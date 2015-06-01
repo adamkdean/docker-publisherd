@@ -1,8 +1,9 @@
-FROM nginx:1.7
+FROM adamkdean/baseimage
 MAINTAINER Adam K Dean
 
-# Install Curl
-RUN apt-get update -qq && apt-get -y install curl
+# Install Curl & Nginx
+RUN apt-get update -qq && \
+    apt-get -y install curl nginx
 
 # Download consul-template and extract it
 RUN mkdir /var/service
@@ -21,15 +22,14 @@ ADD templates/ambassador-template.conf $AMBASSADOR_TEMPLATE
 ENV NGINX_TEMPLATE /etc/consul-templates/nginx-template.conf
 ENV NGINX_CONFIG /etc/nginx/conf.d/app.conf
 ADD templates/nginx-template.conf $NGINX_TEMPLATE
+RUN rm -rf /etc/nginx/sites-enabled/default
 
 # Logging level
 ENV CONSUL_TEMPLATE_LOG debug
 
 # Run this shit
-# CMD nginx -c /etc/nginx/nginx.conf \
-#     & consul-template \
-#         -consul=ambassador:8500 \
-#         -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
-#         -template "$NGINX_TEMPLATE:$NGINX_CONFIG:nginx -s reload";
-
-CMD cat /etc/hosts
+CMD nginx -c /etc/nginx/nginx.conf \
+    & consul-template \
+        -consul=ambassador:8500 \
+        -template "$AMBASSADOR_TEMPLATE:$AMBASSADOR_CONFIG:. $AMBASSADOR_CONFIG" \
+        -template "$NGINX_TEMPLATE:$NGINX_CONFIG:nginx -s reload";
