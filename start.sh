@@ -18,7 +18,7 @@ if [ $(docker ps -a | grep publisherd-data | wc -l) -eq 0 ]; then
 fi
 
 # run the publisherd main container
-docker run --rm -ti \
+docker run -d \
     --name publisherd \
     --link ambassador:ambassador \
     --volumes-from publisherd-data \
