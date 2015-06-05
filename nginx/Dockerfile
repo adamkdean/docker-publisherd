@@ -4,8 +4,7 @@ MAINTAINER Adam K Dean
 RUN apt-get update -qq && \
     apt-get -y install nginx
 
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-RUN rm -f /etc/nginx/sites-available/default
+ADD nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
