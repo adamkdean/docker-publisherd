@@ -23,6 +23,7 @@ docker run -d \
     --name publisherd \
     --link ambassador:ambassador \
     --volumes-from publisherd-data \
+    --restart=always \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -e BACKEND_8500=consul-8500.service.consul \
     publisherd
