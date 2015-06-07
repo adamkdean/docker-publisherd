@@ -12,6 +12,7 @@ docker build -t publisherd .
 if [ $(docker ps -a | grep publisherd-data | wc -l) -eq 0 ]; then
     docker run -d \
         -v /etc/nginx/conf.d/ \
+        -v /etc/nginx/certs/ \
         -v /var/publisherd/ \
         --name publisherd-data \
         busybox
