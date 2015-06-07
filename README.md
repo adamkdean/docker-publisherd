@@ -36,3 +36,29 @@ If you're using SSL, you should add the enablessl flag. Also you will need to ad
         "port":"10000",
         "enablessl": "true"
     }
+
+To extract the certifcate and key from the running registry container and insert them into the data volume container, we run these two commands, one for the .crt and one for the .key:
+
+    superdocker exec -ti $(sdocker ps | grep registry | awk '{print $1}') \
+        cat /go/src/github.com/docker/distribution/certs/domain.crt | \
+        pbcopy && \
+        superdocker run --rm -ti \
+            --volumes-from publisherd-data \
+            ubuntu bash -c "echo '$(pbpaste)' > /etc/nginx/certs/registry.cloudkeeper.io.crt"
+
+    superdocker exec -ti $(sdocker ps | grep registry | awk '{print $1}') \
+        cat /go/src/github.com/docker/distribution/certs/domain.key | \
+        pbcopy && \
+        superdocker run --rm -ti \
+            --volumes-from publisherd-data \
+            ubuntu bash -c "echo '$(pbpaste)' > /etc/nginx/certs/registry.cloudkeeper.io.key"
+
+Maybe clear your clipboard afterwards?
+
+    echo '' | pbcopy
+
+Check the certs are there:
+
+    superdocker run --rm -ti \
+        --volumes-from publisherd-data \
+        ubuntu bash -c "ls /etc/nginx/certs/"
