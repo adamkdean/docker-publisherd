@@ -26,6 +26,10 @@ If you want to allow or deny traffic, use allow and deny with hostname/ip addres
         "allow":"172.17.42.1"
     }
 
+## Large uploads
+
+Use `largeuploads` if you're getting HTTP 413 (docker registry issue).
+
 ## SSL
 
 If you're using SSL, you should add the enablessl flag. Also you will need to add your certificates to the `publisherd-data` container, in the `/etc/nginx/certs/` directory. The name should be the hostname below plus the ext, so `registry.cloudkeeper.io.crt` and `registry.cloudkeeper.io.key`.
