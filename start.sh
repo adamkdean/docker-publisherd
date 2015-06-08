@@ -1,5 +1,10 @@
 #!/bin/bash
 
+ETH0_IP=$(ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}')
+ETH1_IP=$(ifconfig eth1 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}')
+
+echo "Injecting eth0 as $ETH0_IP and eth1 as $ETH1_IP"
+
 # build the publisherd-proxy nginx container
 cd nginx/
 docker build -t publisherd-proxy .
@@ -26,4 +31,6 @@ docker run -d \
     --restart=always \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -e BACKEND_8500=consul-8500.service.consul \
+    -e EXTERNAL_ETH0_IP=$ETH0_IP \
+    -e EXTERNAL_ETH1_IP=$ETH1_IP \
     publisherd
